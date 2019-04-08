@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ed426155-3005-429a-ae8e-faa9fce2829b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="startDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="endDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM
+(SELECT CASE WHEN genero=1 THEN 'HOMBRES' END AS GENERO FROM Usuario WHERE genero = 1 GROUP BY genero) AS GENERO
+,(SELECT COUNT(genero) AS TICS FROM Usuario WHERE genero = 1 AND id_carrera = 1
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TICS
+,(SELECT COUNT(genero) AS DN FROM Usuario WHERE genero = 1 AND id_carrera = 2
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS DN
+,(SELECT COUNT(genero) AS 'A.S.P' FROM Usuario WHERE genero = 1 AND id_carrera = 3
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS ASP
+,(SELECT COUNT(genero) AS 'E.R' FROM Usuario WHERE genero = 1 AND id_carrera = 4
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS ER
+,(SELECT COUNT(genero) AS 'P.I' FROM Usuario WHERE genero = 1 AND id_carrera = 5
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS PII
+,(SELECT COUNT(genero) AS 'P.A' FROM Usuario WHERE genero = 1 AND id_carrera = 6
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS PA
+,(SELECT COUNT(genero) AS 'MEC' FROM Usuario WHERE genero = 1 AND id_carrera = 7
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS MEC
+,(SELECT COUNT(genero) AS 'TOTAL' FROM Usuario WHERE genero = 1
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TOTAL
+UNION ALL
+SELECT * FROM
+(SELECT CASE WHEN genero=1 THEN 'MUJERES' END AS GENERO FROM Usuario WHERE genero = 1 GROUP BY genero) AS GENERO
+,(SELECT COUNT(genero) AS TICS FROM Usuario WHERE genero = 0 AND id_carrera = 1
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TICS
+,(SELECT COUNT(genero) AS DN FROM Usuario WHERE genero = 0 AND id_carrera = 2
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS DN
+,(SELECT COUNT(genero) AS 'A.S.P' FROM Usuario WHERE genero = 0 AND id_carrera = 3
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS ASP
+,(SELECT COUNT(genero) AS 'E.R' FROM Usuario WHERE genero = 0 AND id_carrera = 4
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS ER
+,(SELECT COUNT(genero) AS 'P.I' FROM Usuario WHERE genero = 0 AND id_carrera = 5
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS PII
+,(SELECT COUNT(genero) AS 'P.A' FROM Usuario WHERE genero = 0 AND id_carrera = 6
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS PA
+,(SELECT COUNT(genero) AS 'MEC' FROM Usuario WHERE genero = 0 AND id_carrera = 7
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS MEC
+,(SELECT COUNT(genero) AS 'TOTAL' FROM Usuario WHERE genero = 0
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TOTAL
+UNION ALL
+SELECT * FROM
+(SELECT CASE WHEN genero=1 THEN 'TOTAL' END AS TOTAL
+ FROM Usuario WHERE genero = 1 AND id_carrera = 1 GROUP BY genero)AS TOTALES
+,(SELECT COUNT(genero) AS T FROM Usuario WHERE id_carrera = 1
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TT
+,(SELECT COUNT(genero) AS T FROM Usuario WHERE id_carrera = 2
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TDN
+,(SELECT COUNT(genero) AS T FROM Usuario WHERE id_carrera = 3
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TASP
+,(SELECT COUNT(genero) AS T FROM Usuario WHERE id_carrera = 4
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TER
+,(SELECT COUNT(genero) AS T FROM Usuario WHERE id_carrera = 5
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TPII
+,(SELECT COUNT(genero) AS T FROM Usuario WHERE id_carrera = 6
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TPA
+,(SELECT COUNT(genero) AS T FROM Usuario WHERE id_carrera = 7
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TMEC
+,(SELECT COUNT(genero) AS 'TOTAL' FROM Usuario
+WHERE (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TOTAL]]>
+	</queryString>
+	<field name="GENERO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TICS" class="java.lang.Long"/>
+	<field name="DN" class="java.lang.Long"/>
+	<field name="A.S.P" class="java.lang.Long"/>
+	<field name="E.R" class="java.lang.Long"/>
+	<field name="P.I" class="java.lang.Long"/>
+	<field name="P.A" class="java.lang.Long"/>
+	<field name="MEC" class="java.lang.Long"/>
+	<field name="TOTAL" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="233" y="23" width="123" height="33" uuid="670241d4-6aaa-4bb1-a062-35691173b9b7"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Reportes]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="3386050b-24a6-4076-9142-196f3df774a7"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="61" height="15" uuid="637ca417-41bf-40ff-b3e4-4ca55cf52dfc"/>
+				<text><![CDATA[GENERO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="61" y="19" width="61" height="15" uuid="09e9e274-2239-499e-abbf-82d2ba844652"/>
+				<text><![CDATA[TICS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="122" y="19" width="61" height="15" uuid="7bc87f41-aeb4-4cf0-93c5-9cb7d8f664fe"/>
+				<text><![CDATA[DN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="183" y="19" width="61" height="15" uuid="098d825f-bb13-4780-8a4c-31c3ab67014b"/>
+				<text><![CDATA[A.S.P]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="244" y="19" width="61" height="15" uuid="1f9290da-58da-401d-ab9a-9a6b97dad3a4"/>
+				<text><![CDATA[E.R]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="305" y="19" width="61" height="15" uuid="f057f3cb-7096-4999-9ab5-e72c4bb23323"/>
+				<text><![CDATA[P.I]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="366" y="19" width="61" height="15" uuid="20d3170c-b300-4323-ae0d-a8dd711e655a"/>
+				<text><![CDATA[P.A]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="427" y="19" width="61" height="15" uuid="37e68571-57d3-4c4a-9010-ad6ecb043880"/>
+				<text><![CDATA[MEC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="488" y="19" width="61" height="15" uuid="ab6ee886-cdd8-40d2-ae72-3bed10d2f190"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="2eeccc28-aca7-4547-957b-83be448c8aa3"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="61" height="15" uuid="f2af70d2-3302-4ee9-ae31-8cd68b50a0de"/>
+				<textFieldExpression><![CDATA[$F{GENERO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="61" y="0" width="61" height="15" uuid="353c831f-01ee-4f0a-8723-275bb1910351"/>
+				<textFieldExpression><![CDATA[$F{TICS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="122" y="0" width="61" height="15" uuid="62a4f2a1-ad71-47c2-b86b-3c17002cb636"/>
+				<textFieldExpression><![CDATA[$F{DN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="183" y="0" width="61" height="15" uuid="4511e9a8-ebe5-4f49-9e75-3ec5f735c9e8"/>
+				<textFieldExpression><![CDATA[$F{A.S.P}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="244" y="0" width="61" height="15" uuid="addaa80e-888b-4025-9a9f-4914385cb3f7"/>
+				<textFieldExpression><![CDATA[$F{E.R}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="305" y="0" width="61" height="15" uuid="277598e3-5e16-4c11-b7e7-7a170ad5e815"/>
+				<textFieldExpression><![CDATA[$F{P.I}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="366" y="0" width="61" height="15" uuid="cd0bef39-4f51-46da-984b-24462ff9213e"/>
+				<textFieldExpression><![CDATA[$F{P.A}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="427" y="0" width="61" height="15" uuid="9f22620d-0927-4f14-8263-167d04a12174"/>
+				<textFieldExpression><![CDATA[$F{MEC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="488" y="0" width="61" height="15" uuid="958a9e53-d8db-4cf0-9e60-3cc43d227c53"/>
+				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="c867a55e-b203-4df9-a10e-f3721b3e2bb9"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="7166d59d-b7ca-4a8e-9cf3-e353cd101a2a"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="c6f80b64-5894-45b9-99ec-46db206526c5"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="633ac83b-08c0-4cb9-9c13-7bd5530ad7a3"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

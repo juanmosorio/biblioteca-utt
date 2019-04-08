@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5cd9bb7d-91f4-4302-9b4b-23129cab312f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM 
+(SELECT GRADO = case when genero=1 then 'Alumno TSU' end 
+FROM Usuario WHERE genero = 1 GROUP BY genero) AS GRADO
+,(SELECT YEAR(fecha) AS AÑO, MONTH(fecha) AS MESH, COUNT(grado) AS HOMBRES FROM Usuario 
+WHERE genero = 1 AND grado = 'TSU' 
+GROUP BY MONTH(fecha),YEAR(fecha)) AS HOMBRES
+,(SELECT YEAR(fecha) AS AÑO, MONTH(fecha) AS MESM, COUNT(grado) AS MUJERES FROM Usuario 
+WHERE genero = 0 AND grado = 'TSU' 
+GROUP BY MONTH(fecha),YEAR(fecha)) AS MUJERES
+,(SELECT YEAR(fecha) AS AÑO, MONTH(fecha) AS MEST, COUNT(grado) AS TOTAL FROM Usuario
+WHERE grado = 'TSU' 
+GROUP BY MONTH(fecha),YEAR(fecha)) AS TOTAL
+,(SELECT YEAR(fecha) AS AÑO, MONTH(fecha) AS MESES,
+CASE 
+WHEN MONTH(fecha) = 1 THEN 'ENERO'
+WHEN MONTH(fecha) = 2 THEN 'FEBRERO'
+WHEN MONTH(fecha) = 3 THEN 'MARZO'
+WHEN MONTH(fecha) = 4 THEN 'ABRIL'
+WHEN MONTH(fecha) = 5 THEN 'MAYO'
+WHEN MONTH(fecha) = 6 THEN 'JUNIO'
+WHEN MONTH(fecha) = 7 THEN 'JULIO'
+WHEN MONTH(fecha) = 8 THEN 'AGOSTO'
+WHEN MONTH(fecha) = 9 THEN 'SEPTIEMBRE'
+WHEN MONTH(fecha) = 10 THEN 'OCTUBRE'
+WHEN MONTH(fecha) = 11 THEN 'NOVIEMBRE'
+WHEN MONTH(fecha) = 12 THEN 'DICIEMBRE'
+END AS MES FROM Usuario
+WHERE genero = 1 AND grado = 'TSU' 
+GROUP BY MONTH(fecha),YEAR(fecha)) AS  MESES
+WHERE HOMBRES.MESH = MUJERES.MESM AND HOMBRES.MESH = TOTAL.MEST AND HOMBRES.MESH = MESES.MESES
+AND	  HOMBRES.AÑO = MUJERES.AÑO AND HOMBRES.AÑO = TOTAL.AÑO AND HOMBRES.AÑO = MESES.AÑO
+
+UNION ALL
+
+SELECT * FROM 
+(SELECT GRADO = case when genero=1 then 'Alumno Ingenieria' end 
+FROM Usuario WHERE genero = 1 GROUP BY genero) AS GRADO
+,(SELECT  YEAR(fecha) AS AÑO,MONTH(fecha) AS MESH, COUNT(grado) AS HOMBRES FROM Usuario 
+WHERE genero = 1 AND grado = 'INGENIERIA' 
+GROUP BY MONTH(fecha),YEAR(fecha)) AS HOMBRES
+,(SELECT  YEAR(fecha) AS AÑO,MONTH(fecha) AS MESM, COUNT(grado) AS MUJERES FROM Usuario 
+WHERE genero = 0 AND grado = 'INGENIERIA' 
+GROUP BY MONTH(fecha),YEAR(fecha)) AS MUJERES
+,(SELECT  YEAR(fecha) AS AÑO,MONTH(fecha) AS MEST, COUNT(grado) AS TOTAL FROM Usuario
+WHERE grado = 'INGENIERIA'  
+GROUP BY MONTH(fecha), YEAR(fecha)) AS TOTAL
+,(SELECT  YEAR(fecha) AS AÑO, MONTH(fecha) AS MESES,
+CASE 
+WHEN MONTH(fecha) = 1 THEN 'ENERO'
+WHEN MONTH(fecha) = 2 THEN 'FEBRERO'
+WHEN MONTH(fecha) = 3 THEN 'MARZO'
+WHEN MONTH(fecha) = 4 THEN 'ABRIL'
+WHEN MONTH(fecha) = 5 THEN 'MAYO'
+WHEN MONTH(fecha) = 6 THEN 'JUNIO'
+WHEN MONTH(fecha) = 7 THEN 'JULIO'
+WHEN MONTH(fecha) = 8 THEN 'AGOSTO'
+WHEN MONTH(fecha) = 9 THEN 'SEPTIEMBRE'
+WHEN MONTH(fecha) = 10 THEN 'OCTUBRE'
+WHEN MONTH(fecha) = 11 THEN 'NOVIEMBRE'
+WHEN MONTH(fecha) = 12 THEN 'DICIEMBRE'
+END AS MES FROM Usuario
+WHERE genero = 1 AND grado = 'TSU' 
+GROUP BY MONTH(fecha), YEAR(fecha)) AS  MESES
+WHERE HOMBRES.MESH = MUJERES.MESM AND HOMBRES.MESH = TOTAL.MEST AND HOMBRES.MESH = MESES.MESES
+AND	  HOMBRES.AÑO = MUJERES.AÑO AND HOMBRES.AÑO = TOTAL.AÑO AND HOMBRES.AÑO = MESES.AÑO
+UNION ALL
+SELECT * FROM 
+(SELECT GRADO = case when genero=1 then 'TOTAL' end 
+FROM Usuario WHERE genero = 1 GROUP BY genero) AS GRADO
+,(SELECT YEAR(fecha) AS AÑO, MONTH(fecha) AS MESH, COUNT(grado) AS HOMBRES FROM Usuario 
+WHERE genero = 1 
+GROUP BY MONTH(fecha),YEAR(fecha)) AS HOMBRES
+,(SELECT YEAR(fecha) AS AÑO,MONTH(fecha) AS MESM,COUNT(grado) AS MUJERES FROM Usuario 
+WHERE genero = 0 
+GROUP BY MONTH(fecha),YEAR(fecha)) AS MUJERES
+,(SELECT YEAR(fecha) AS AÑO,MONTH(fecha) AS MEST, COUNT(grado) AS TOTAL FROM Usuario
+
+GROUP BY MONTH(fecha),YEAR(fecha)) AS TOTAL
+,(SELECT YEAR(fecha) AS AÑO,MONTH(fecha) AS MESES, 
+CASE 
+WHEN MONTH(fecha) = 1 THEN 'ENERO'
+WHEN MONTH(fecha) = 2 THEN 'FEBRERO'
+WHEN MONTH(fecha) = 3 THEN 'MARZO'
+WHEN MONTH(fecha) = 4 THEN 'ABRIL'
+WHEN MONTH(fecha) = 5 THEN 'MAYO'
+WHEN MONTH(fecha) = 6 THEN 'JUNIO'
+WHEN MONTH(fecha) = 7 THEN 'JULIO'
+WHEN MONTH(fecha) = 8 THEN 'AGOSTO'
+WHEN MONTH(fecha) = 9 THEN 'SEPTIEMBRE'
+WHEN MONTH(fecha) = 10 THEN 'OCTUBRE'
+WHEN MONTH(fecha) = 11 THEN 'NOVIEMBRE'
+WHEN MONTH(fecha) = 12 THEN 'DICIEMBRE'
+END AS MES FROM Usuario
+WHERE genero = 1 AND grado = 'TSU' 
+GROUP BY MONTH(fecha),YEAR(fecha)) AS  MESES
+WHERE HOMBRES.MESH = MUJERES.MESM AND HOMBRES.MESH = TOTAL.MEST AND HOMBRES.MESH = MESES.MESES
+AND	  HOMBRES.AÑO = MUJERES.AÑO AND HOMBRES.AÑO = TOTAL.AÑO AND HOMBRES.AÑO = MESES.AÑO]]>
+	</queryString>
+	<field name="GRADO" class="java.lang.String"/>
+	<field name="HOMBRES" class="java.lang.Integer"/>
+	<field name="MUJERES" class="java.lang.Integer"/>
+	<field name="TOTAL" class="java.lang.Integer"/>
+	<field name="MES" class="java.lang.String"/>
+	<field name="AÑO" class="java.lang.Integer"/>
+	<group name="AÑO">
+		<groupExpression><![CDATA[$F{AÑO}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField>
+					<reportElement style="SubTitle" x="47" y="13" width="506" height="24" forecolor="#006600" uuid="9d346913-2441-4f65-a6ed-5106657bb519"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{AÑO}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="13" width="36" height="24" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="4753697e-e1e8-4867-9202-b1f160a59aca"/>
+				</rectangle>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="MES">
+		<groupExpression><![CDATA[$F{MES}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement style="SubTitle" x="0" y="4" width="460" height="20" uuid="c8a62308-15b2-4e57-ba90-7561f108561b"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MES}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="263" height="33" uuid="eac09c9b-af97-45a2-a92b-059fc8822b3d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Leaf Green Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="100" y="46" width="174" height="22" uuid="b8cbdc8a-7b09-4a29-8832-b0d215af2b2f"/>
+				<text><![CDATA[Leaf Green SubTitle]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="64f08110-a0f9-41ad-9ad8-44c6f6e9d28a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="138" height="15" uuid="0e0cb38d-ef6e-491c-9420-98266d5b80a8"/>
+				<text><![CDATA[GRADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="138" y="19" width="138" height="15" uuid="15f4766f-adfe-4a60-b417-cd16098d3db3"/>
+				<text><![CDATA[HOMBRES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="276" y="19" width="138" height="15" uuid="4df8ea9f-896c-4ae1-987a-5ab63cfe3931"/>
+				<text><![CDATA[MUJERES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="414" y="19" width="138" height="15" uuid="b75911cc-9aa4-4705-8fe0-a987afff7843"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="b66fb100-0c4d-43b5-8f38-f459d72abc12"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="138" height="15" uuid="3c5afdee-4c1d-453a-a03e-d317462f2470"/>
+				<textFieldExpression><![CDATA[$F{GRADO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="138" y="0" width="138" height="15" uuid="25410d18-62cb-40d5-9d60-1e786f9e4e3b"/>
+				<textFieldExpression><![CDATA[$F{HOMBRES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="276" y="0" width="138" height="15" uuid="e8d56fdf-cff3-4f41-adf4-b9c7ff1327c1"/>
+				<textFieldExpression><![CDATA[$F{MUJERES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="414" y="0" width="138" height="15" uuid="db422f8c-f403-446c-b600-a4d197a547de"/>
+				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="d778558c-a33c-4962-a324-832554d1a929"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="87dbac2c-2899-4e42-abb6-b1615fa86079"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="b18761ee-8835-421c-9fb3-b2ea34677e31"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="874905cd-2af5-4263-bec3-3422dbd37cba"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

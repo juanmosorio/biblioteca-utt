@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c29248b8-5acb-40b7-88a4-09471e8e39ed">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="startDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[2018-04-21]]></defaultValueExpression>
+	</parameter>
+	<parameter name="endDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[2018-04-28]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM 
+(SELECT case when genero=1 then 'Alumno TSU' end AS GRADO
+FROM Usuario WHERE genero = 1 GROUP BY genero) AS GRADO
+,(SELECT COUNT(grado) AS HOMBRES FROM Usuario 
+WHERE genero = 1 AND grado = 'TSU'
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS HOMBRES
+,(SELECT COUNT(grado) AS MUJERES FROM Usuario 
+WHERE genero = 0 AND grado = 'TSU'
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS MUJERES
+,(SELECT COUNT(grado) AS TOTAL FROM Usuario
+WHERE grado = 'TSU'
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TOTAL
+UNION ALL
+SELECT * FROM 
+(SELECT case when genero=1 then 'Alumno Ingenieria' end AS GRADO
+FROM Usuario WHERE genero = 1 GROUP BY genero) AS GRADO
+,(SELECT COUNT(grado) AS HOMBRES FROM Usuario 
+WHERE genero = 1 AND grado = 'INGENIERIA'
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS HOMBRES
+,(SELECT COUNT(grado) AS MUJERES FROM Usuario 
+WHERE genero = 0 AND grado = 'INGENIERIA'
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS MUJERES
+,(SELECT COUNT(grado) AS TOTAL FROM Usuario
+WHERE grado = 'INGENIERIA'
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TOTAL
+UNION ALL
+SELECT * FROM 
+(SELECT case when genero=1 then 'TOTAL' end AS GRADO
+FROM Usuario WHERE genero = 1 GROUP BY genero) AS GRADO
+,(SELECT COUNT(grado) AS 'TOTAL HOMBRES' FROM Usuario 
+WHERE genero = 1
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS HOMBRES
+,(SELECT COUNT(grado) AS 'TOTAL MUJERES' FROM Usuario 
+WHERE genero = 0
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS MUJERES
+,(SELECT COUNT(grado) AS TOTAL FROM Usuario
+WHERE (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TOTAL]]>
+	</queryString>
+	<field name="GRADO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HOMBRES" class="java.lang.Long"/>
+	<field name="MUJERES" class="java.lang.Long"/>
+	<field name="TOTAL" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="555" height="25" uuid="46256f00-9718-4d30-996d-51b8236f3a42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[REGISTRO DE ENTRADA A LA BIBLIOTECA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="51" width="555" height="19" uuid="ab0ea900-1790-45c4-b017-a0bb2040be28"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL GENERO TSU - ING]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="6aa52f92-a247-452f-8ae7-c533f539fbf9"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="21" width="138" height="15" forecolor="#000000" backcolor="#00CCFF" uuid="618c5f9e-8034-4c47-8735-8aff12d9e202"/>
+				<text><![CDATA[GRADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="138" y="20" width="138" height="15" forecolor="#000000" uuid="4bb4f61b-c522-428e-a6ac-5df535d139ac"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[HOMBRES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="279" y="20" width="138" height="15" forecolor="#000000" uuid="79b233d2-524f-4abc-baeb-bd40fa2984d1"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[MUJERES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="417" y="20" width="138" height="15" forecolor="#000000" uuid="41602132-71c8-4930-a326-6dbae580b501"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="c156bcd4-77a1-4600-80ec-5326578a297e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="1" width="138" height="15" uuid="8f1d82c7-5156-4940-a0d6-3ed33683a853"/>
+				<textElement textAlignment="Justified">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GRADO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="138" y="1" width="138" height="15" uuid="efe58949-6eac-4e55-988c-66c94ced636e"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HOMBRES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="417" y="0" width="138" height="15" uuid="aec71da4-1e16-4aeb-ab2b-a6ef26501fc0"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="279" y="0" width="138" height="15" uuid="5ef4a8bb-ac78-487f-b5d0-7530ddd1dc85"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MUJERES}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="131" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="a42785d0-6a1e-4256-84e8-298baf4a25fe"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<barChart>
+				<chart>
+					<reportElement x="0" y="7" width="555" height="124" uuid="71817123-7c86-4bc9-aa89-1090b79d4bda"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{GRADO}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{HOMBRES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{TOTAL}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{GRADO}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{MUJERES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{TOTAL}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="c2818cd7-3f46-438e-8703-62ac813c4ddf"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="85f123bb-e6d3-456a-aa3b-70ca08504fa4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="c273bfbd-27cc-4ce2-a178-59f9f7dd73d9"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

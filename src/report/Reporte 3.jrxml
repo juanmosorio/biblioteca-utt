@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ff0d5d0e-917d-4fb1-b586-7c8c848b4d04">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="startDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="endDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM
+(SELECT CASE WHEN genero=1 THEN 'Alumno TSU' END AS GRADO FROM Usuario WHERE genero = 1 GROUP BY genero) AS GRADO
+,(SELECT COUNT(grado) AS TICS FROM Usuario WHERE grado = 'TSU' AND id_carrera = 1
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TICS
+,(SELECT COUNT(grado) AS DN FROM Usuario WHERE grado = 'TSU' AND id_carrera = 2
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS DN
+,(SELECT COUNT(grado) AS 'A.S.P' FROM Usuario WHERE grado = 'TSU' AND id_carrera = 3
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS ASP
+,(SELECT COUNT(grado) AS 'E.R' FROM Usuario WHERE grado = 'TSU' AND id_carrera = 4
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS ER
+,(SELECT COUNT(grado) AS 'P.I' FROM Usuario WHERE grado = 'TSU' AND id_carrera = 5
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS PII
+,(SELECT COUNT(grado) AS 'P.A' FROM Usuario WHERE grado = 'TSU' AND id_carrera = 6
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS PA
+,(SELECT COUNT(grado) AS 'MEC' FROM Usuario WHERE grado = 'TSU' AND id_carrera = 7
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS MEC
+,(SELECT COUNT(grado) AS 'TOTAL' FROM Usuario WHERE grado = 'TSU'
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TOTAL
+UNION ALL
+SELECT * FROM
+(SELECT CASE WHEN genero=1 THEN 'Alumno Ingenieria' END AS GRADO FROM Usuario WHERE genero = 1 GROUP BY genero) AS GRADO
+,(SELECT COUNT(grado) AS TICS FROM Usuario WHERE grado = 'INGENIERIA' AND id_carrera = 1
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TICS
+,(SELECT COUNT(grado) AS DN FROM Usuario WHERE grado = 'INGENIERIA' AND id_carrera = 2
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS DN
+,(SELECT COUNT(grado) AS 'A.S.P' FROM Usuario WHERE grado = 'INGENIERIA' AND id_carrera = 3
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS ASP
+,(SELECT COUNT(grado) AS 'E.R' FROM Usuario WHERE grado = 'INGENIERIA' AND id_carrera = 4
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS ER
+,(SELECT COUNT(grado) AS 'P.I' FROM Usuario WHERE grado = 'INGENIERIA' AND id_carrera = 5
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS PII
+,(SELECT COUNT(grado) AS 'P.A' FROM Usuario WHERE grado = 'INGENIERIA' AND id_carrera = 6
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS PA
+,(SELECT COUNT(grado) AS 'MEC' FROM Usuario WHERE grado = 'INGENIERIA' AND id_carrera = 7
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS MEC
+,(SELECT COUNT(grado) AS 'TOTAL' FROM Usuario WHERE grado = 'INGENIERIA'
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TOTAL
+UNION ALL
+SELECT * FROM
+(SELECT case when grado='TSU' then 'TOTAL' end AS GRADO
+ FROM Usuario WHERE grado = 'TSU' AND id_carrera = 1 GROUP BY grado)AS TOTALES
+,(SELECT COUNT(grado) AS T FROM Usuario WHERE id_carrera = 1
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TT
+,(SELECT COUNT(grado) AS T FROM Usuario WHERE id_carrera = 2
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TDN
+,(SELECT COUNT(grado) AS T FROM Usuario WHERE id_carrera = 3
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TASP
+,(SELECT COUNT(grado) AS T FROM Usuario WHERE id_carrera = 4
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TER
+,(SELECT COUNT(grado) AS T FROM Usuario WHERE id_carrera = 5
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TPII
+,(SELECT COUNT(grado) AS T FROM Usuario WHERE id_carrera = 6
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TPA
+,(SELECT COUNT(grado) AS T FROM Usuario WHERE id_carrera = 7
+AND (fecha >= $P{startDate} AND fecha <= $P{endDate})) AS TMEC
+,(SELECT COUNT(grado) AS 'TOTAL' FROM Usuario
+WHERE (fecha >= $P{startDate} AND fecha <= $P{endDate}))AS TOTAL]]>
+	</queryString>
+	<field name="GRADO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TICS" class="java.lang.Long"/>
+	<field name="DN" class="java.lang.Long"/>
+	<field name="A.S.P" class="java.lang.Long"/>
+	<field name="E.R" class="java.lang.Long"/>
+	<field name="P.I" class="java.lang.Long"/>
+	<field name="P.A" class="java.lang.Long"/>
+	<field name="MEC" class="java.lang.Long"/>
+	<field name="TOTAL" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="207" y="19" width="123" height="33" uuid="ca227ba6-2d35-4b6b-9127-cd8e900cbcf6"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Reportes]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="28479ec2-ea62-448c-bb4d-29a34d8a8cf5"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="61" height="15" uuid="c6e69625-95a3-4f41-9fcd-a6072b98e71d"/>
+				<text><![CDATA[GRADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="61" y="19" width="61" height="15" uuid="4a353b32-d00f-4ce7-87d4-e24dce9010be"/>
+				<text><![CDATA[TICS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="122" y="19" width="61" height="15" uuid="ec96a0c1-5e86-4c30-9a78-63f4e67bad57"/>
+				<text><![CDATA[DN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="183" y="19" width="61" height="15" uuid="3cca932a-8efc-431c-acc5-75be9101703f"/>
+				<text><![CDATA[A.S.P]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="244" y="19" width="61" height="15" uuid="19ba6b31-05ba-4ed3-8f3c-2bc2861019ad"/>
+				<text><![CDATA[E.R]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="305" y="19" width="61" height="15" uuid="7463c59e-5d44-41d8-836c-b3f80d40b636"/>
+				<text><![CDATA[P.I]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="366" y="19" width="61" height="15" uuid="0ebf607e-a397-4188-962a-997d52442ed6"/>
+				<text><![CDATA[P.A]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="427" y="19" width="61" height="15" uuid="386bd760-3f7b-4fdb-a09b-a0f8cb99a372"/>
+				<text><![CDATA[MEC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="488" y="19" width="61" height="15" uuid="92d82f25-ab05-4c7d-bbf7-87c4f18197f7"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="0aabb9b5-9d0a-499c-a0c8-a8b9eb1d8963"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="61" height="15" uuid="ca578f0e-2b3d-4094-94ba-567d8eb92bc9"/>
+				<textFieldExpression><![CDATA[$F{GRADO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="61" y="0" width="61" height="15" uuid="710fc230-fb1b-4d2f-905b-3c2cf2d365a3"/>
+				<textFieldExpression><![CDATA[$F{TICS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="122" y="0" width="61" height="15" uuid="bd7cfdf1-42fc-4bba-9383-78f0708daadc"/>
+				<textFieldExpression><![CDATA[$F{DN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="183" y="0" width="61" height="15" uuid="d29a1d56-be6e-4c1e-a6f4-2598ec44eca5"/>
+				<textFieldExpression><![CDATA[$F{A.S.P}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="244" y="0" width="61" height="15" uuid="bde1f241-7e64-498f-b4ca-543383552a43"/>
+				<textFieldExpression><![CDATA[$F{E.R}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="305" y="0" width="61" height="15" uuid="0229aab4-6670-443c-a4ba-7e1bead0ebc6"/>
+				<textFieldExpression><![CDATA[$F{P.I}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="366" y="0" width="61" height="15" uuid="aa3c3ff4-32cb-40b7-ae51-18a108e7dae8"/>
+				<textFieldExpression><![CDATA[$F{P.A}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="427" y="0" width="61" height="15" uuid="3f49a58f-ad84-4dd9-9da3-459b5eec010a"/>
+				<textFieldExpression><![CDATA[$F{MEC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="488" y="0" width="61" height="15" uuid="911ec1a7-1b52-4b5b-9f71-d34fffa0d1a5"/>
+				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="7c18ab5b-515c-4fee-bb0f-5288ed428a53"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="91c57ae9-1307-4052-b1c7-f806657ca606"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="a0242c8a-ed7b-4dfc-96c1-f47ae31c47a0"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="f96628a2-3606-4c7e-8df8-90efdd7b18bd"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

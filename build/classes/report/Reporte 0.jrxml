@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6eae2d10-c6ba-416f-b99c-8083db65359b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="startDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[2015-12-02]]></defaultValueExpression>
+	</parameter>
+	<parameter name="endDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[2017-12-02]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT YEAR(fecha) AS AÑO,
+CASE 
+WHEN MONTH(fecha) = 1 THEN 'ENERO'
+WHEN MONTH(fecha) = 2 THEN 'FEBRERO'
+WHEN MONTH(fecha) = 3 THEN 'MARZO'
+WHEN MONTH(fecha) = 4 THEN 'ABRIL'
+WHEN MONTH(fecha) = 5 THEN 'MAYO'
+WHEN MONTH(fecha) = 6 THEN 'JUNIO'
+WHEN MONTH(fecha) = 7 THEN 'JULIO'
+WHEN MONTH(fecha) = 8 THEN 'AGOSTO'
+WHEN MONTH(fecha) = 9 THEN 'SEPTIEMBRE'
+WHEN MONTH(fecha) = 10 THEN 'OCTUBRE'
+WHEN MONTH(fecha) = 11 THEN 'NOVIEMBRE'
+WHEN MONTH(fecha) = 12 THEN 'DICIEMBRE' END AS MES
+ ,matricula,U.nombre,apellidoPaterno,apellidoMaterno,
+ CASE 
+	WHEN genero = 1 THEN 'M'
+	WHEN genero = 0 THEN 'F' END AS
+ genero,
+ CASE 
+	WHEN grado = 'TSU' THEN 'TSU'
+	WHEN grado = 'INGENIERIA' THEN 'ING' END AS
+grado,hora_entrada,hora_salida,
+fecha,C.nombre,A.nombre,tipo FROM Usuario U
+JOIN Carrera C ON U.id_carrera = C.id_carrera
+JOIN Actividad A ON U.id_actividad = A.id_actividad
+WHERE (fecha >= $P{startDate} AND fecha <=$P{endDate} )
+ORDER BY YEAR(fecha),MONTH(fecha), grado,genero]]>
+	</queryString>
+	<field name="AÑO" class="java.lang.Integer"/>
+	<field name="MES" class="java.lang.String"/>
+	<field name="matricula" class="java.lang.Long"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellidoPaterno" class="java.lang.String"/>
+	<field name="apellidoMaterno" class="java.lang.String"/>
+	<field name="genero" class="java.lang.String"/>
+	<field name="grado" class="java.lang.String"/>
+	<field name="hora_entrada" class="java.sql.Time"/>
+	<field name="hora_salida" class="java.sql.Time"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="tipo" class="java.lang.String"/>
+	<group name="AÑO">
+		<groupExpression><![CDATA[$F{AÑO}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField>
+					<reportElement style="SubTitle" x="0" y="16" width="506" height="24" forecolor="#000000" uuid="24859384-c558-46f1-bf67-b5a400bf2f78"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{AÑO}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="MES">
+		<groupExpression><![CDATA[$F{MES}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement style="SubTitle" x="0" y="4" width="460" height="20" forecolor="#000000" uuid="34bf4acb-9084-4c9b-8942-529e24abe4db"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MES}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="16" width="555" height="25" uuid="2993082b-1d25-4d30-8180-33da3ed19271"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[REGISTRO DE ENTRADA A LA BIBLIOTECA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="51" width="555" height="19" uuid="21992318-d9a4-4edd-8b6b-34d80dc140f0"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL GENERO TSU - ING]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="509031a2-a7b3-42ba-9ca6-a3f1ced5912a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="61" height="15" forecolor="#000000" uuid="efcd134a-c2be-4c4d-821f-5838eadd6e25"/>
+				<text><![CDATA[Matricula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="61" y="19" width="61" height="15" forecolor="#000000" uuid="0d54b605-ddd9-4bd3-a483-74c9aa2da6ea"/>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="122" y="19" width="61" height="15" forecolor="#000000" uuid="a2c58c36-73e7-4d50-a886-d692f0715308"/>
+				<text><![CDATA[Apellido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="183" y="19" width="61" height="15" uuid="eafa9446-fbba-4865-b9d4-5ec888b5626f"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="244" y="19" width="61" height="15" forecolor="#000000" uuid="aadb697e-896f-4195-bd4a-0260a3fb7bfb"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Genero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="305" y="19" width="61" height="15" forecolor="#000000" uuid="13b52ca3-936f-4e84-a2f2-4be638499015"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Grado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="366" y="19" width="61" height="15" forecolor="#000000" uuid="a5b74715-19b3-46ef-be14-d446dd0ce503"/>
+				<text><![CDATA[Entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="427" y="19" width="61" height="15" forecolor="#000000" uuid="22ee440a-b3d4-44cb-acfb-f42953ab2dac"/>
+				<text><![CDATA[Salida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="488" y="19" width="61" height="15" forecolor="#000000" uuid="8e8a9d6e-af05-4b44-bbe7-90f73762d875"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="e7bbdab3-cad8-4993-98ff-717d5f92d267"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="61" height="15" uuid="0fed6132-6d44-4db7-a57b-ecd640751e36"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="61" y="0" width="61" height="15" uuid="826e5880-04cb-48a7-9853-0ae4e8d76993"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="122" y="0" width="61" height="15" uuid="553dc24d-b3f7-4f21-822a-5ae8142f3e3a"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{apellidoPaterno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="183" y="0" width="61" height="15" uuid="e1013ca4-bc87-4243-bcdd-b2e4bcb9ee1f"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{apellidoMaterno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="244" y="0" width="61" height="15" uuid="9d15f701-4d95-48f0-b6cd-5ef8c2e7f81f"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{genero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="305" y="0" width="61" height="15" uuid="1dfd6ccf-e47b-4c7d-a588-6f0db18f2763"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="366" y="0" width="61" height="15" uuid="868c81e5-c1df-42fd-a22e-8ceac37cc4bb"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hora_entrada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="427" y="0" width="61" height="15" uuid="cd2ce781-1d44-41d8-9423-a38528e39e32"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hora_salida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="488" y="0" width="61" height="15" uuid="087404f6-abb1-406e-9f48-e69a0c3dd35f"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="415bf655-e442-4580-909a-5111378527e8"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="3f60e584-b2a5-4db0-84bc-dbdb8e3e0276"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="c1b7a9d8-cb36-47ae-8a42-7c3fceb9bc78"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="271614e5-3400-4cd5-b381-0a5368fcffbd"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
